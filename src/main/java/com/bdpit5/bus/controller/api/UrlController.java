@@ -1,4 +1,4 @@
-package com.bdpit5.bus.controller;
+package com.bdpit5.bus.controller.api;
 
 import com.bdpit5.bus.dto.CreateUrlRequest;
 import com.bdpit5.bus.dto.UrlResponse;
@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package com.bdpit5.bus.controller;
+package com.bdpit5.bus.controller.api;
 
 import com.bdpit5.bus.dto.QrRequest;
 import com.bdpit5.bus.dto.QrResponse;

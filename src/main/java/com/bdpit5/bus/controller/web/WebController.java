@@ -1,4 +1,4 @@
-package com.bdpit5.bus.controller;
+package com.bdpit5.bus.controller.web;
 
 import com.bdpit5.bus.dto.CreateUrlRequest;
 import com.bdpit5.bus.dto.QrRequest;
