@@ -33,4 +33,9 @@ public class WebController {
         }
         return "index";
     }
+
+    @GetMapping("/admin")
+    public String adminPage() {
+        return "adminPage";
+    }
 }

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+<div class="max-w-7xl mx-auto p-8">
+
+    <h1 class="text-3xl font-bold mb-8">Admin Dashboard</h1>
+
+    <!-- URL TABLE -->
+    <div class="bg-white shadow-lg rounded-2xl p-6 mb-10">
+        <h2 class="text-xl font-semibold mb-4">All Short URLs</h2>
+
+        <div class="overflow-x-auto">
+            <table class="min-w-full border border-gray-200">
+                <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-4 py-2 text-left">Original URL</th>
+                    <th class="px-4 py-2 text-left">Short URL</th>
+                </tr>
+                </thead>
+                <tbody id="urlTableBody" class="divide-y divide-gray-200">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- QR TABLE -->
+    <div class="bg-white shadow-lg rounded-2xl p-6">
+        <h2 class="text-xl font-semibold mb-4">All QR Codes</h2>
+
+        <div class="overflow-x-auto">
+            <table class="min-w-full border border-gray-200">
+                <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-4 py-2 text-left">QR ID</th>
+                    <th class="px-4 py-2 text-left">QR Image</th>
+                </tr>
+                </thead>
+                <tbody id="qrTableBody" class="divide-y divide-gray-200">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    async function loadUrls() {
+        const response = await fetch('/api/urls');
+        const data = await response.json();
+
+        const tableBody = document.getElementById("urlTableBody");
+        tableBody.innerHTML = "";
+
+        data.output_schemas.forEach(item => {
+            tableBody.innerHTML += `
+                <tr class="hover:bg-gray-50">
+                    <td class="px-4 py-2">${item.original_url}</td>
+                    <td class="px-4 py-2 text-blue-600">
+                        <a href="${item.short_url}" target="_blank">
+                            ${item.short_url}
+                        </a>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    async function loadQr() {
+        const response = await fetch('/inquiry-all');
+        const data = await response.json();
+
+        const tableBody = document.getElementById("qrTableBody");
+        tableBody.innerHTML = "";
+
+        data.output_schemas.forEach(item => {
+            tableBody.innerHTML += `
+                <tr class="hover:bg-gray-50">
+                    <td class="px-4 py-2">${item.id}</td>
+                    <td class="px-4 py-2">
+                        <img src="${item.qr_image}" class="w-24 h-24"/>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    loadUrls();
+    loadQr();
+</script>
+
+</body>
+</html>
