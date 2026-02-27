@@ -43,4 +43,14 @@ public class UrlController {
         return ResponseEntity.ok(service.getAllUrls());
     }
 
+    @DeleteMapping("/api/urls/{shortCode}")
+    public ResponseEntity<UrlResponse> deleteUrl(@PathVariable String shortCode) {
+        return ResponseEntity.ok(service.deleteByShortCode(shortCode));
+    }
+
+    @DeleteMapping("/api/urls/all")
+    public ResponseEntity<UrlResponse> deleteAllUrls() {
+        return ResponseEntity.ok(service.deleteAllUrls());
+    }
+
 }
