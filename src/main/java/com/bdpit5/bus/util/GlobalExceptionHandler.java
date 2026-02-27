@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestControllerAdvice
+@RestControllerAdvice("com.bdpit5.bus.controller.api")
 public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<UrlResponse> handleRuntime(RuntimeException ex) {
