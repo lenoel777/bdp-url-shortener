@@ -14,7 +14,7 @@ public class QrController {
 
     private final QrService qrService;
 
-    @GetMapping("/inquiry-all")
+    @GetMapping("/inquiry")
     public ResponseEntity<QrResponse> inquiryAll() {
         return ResponseEntity.ok(qrService.inquiryAll());
     }
@@ -24,5 +24,15 @@ public class QrController {
             @RequestBody QrRequest request
     ) {
         return ResponseEntity.ok(qrService.generate(request));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<QrResponse> deleteQr(@PathVariable Long id) {
+        return ResponseEntity.ok(qrService.deleteById(id));
+    }
+
+    @DeleteMapping("/all")
+    public ResponseEntity<QrResponse> deleteAllQr() {
+        return ResponseEntity.ok(qrService.deleteAllQr());
     }
 }

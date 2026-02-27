@@ -116,6 +116,58 @@ public class UrlService {
         }
     }
 
+    public UrlResponse deleteByShortCode(String shortCode) {
+        try {
+            UrlMappingEntity entity = repository.findByShortCode(shortCode)
+                    .orElseThrow(() -> new IllegalArgumentException("Short code not found: " + shortCode));
+
+            repository.delete(entity);
+
+            return buildResponse(
+                    "200",
+                    "Data berhasil dihapus",
+                    "Data deleted successfully",
+                    List.of()
+            );
+
+        } catch (IllegalArgumentException e) {
+            return buildResponse(
+                    "404",
+                    e.getMessage(),
+                    "Not Found",
+                    List.of()
+            );
+        } catch (Exception e) {
+            return buildResponse(
+                    "500",
+                    "Gagal menghapus data",
+                    "Internal server error",
+                    List.of()
+            );
+        }
+    }
+
+    public UrlResponse deleteAllUrls() {
+        try {
+            repository.deleteAll();
+
+            return buildResponse(
+                    "200",
+                    "Semua data berhasil dihapus",
+                    "All data deleted successfully",
+                    List.of()
+            );
+
+        } catch (Exception e) {
+            return buildResponse(
+                    "500",
+                    "Gagal menghapus semua data",
+                    "Internal server error",
+                    List.of()
+            );
+        }
+    }
+
     private String generateUniqueShortCode() {
         String shortCode;
         do {

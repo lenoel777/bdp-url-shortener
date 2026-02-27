@@ -14,6 +14,7 @@ import java.io.ByteArrayOutputStream;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -88,6 +89,58 @@ public class QrService {
                         .collect(Collectors.toList());
 
         return buildResponse("00", "Berhasil", "Success", outputs);
+    }
+
+    public QrResponse deleteById(Long id) {
+        try {
+            QrCodeEntity entity = qrRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("QR Code ID not found: " + id));
+
+            qrRepository.delete(entity);
+
+            return buildResponse(
+                    "200",
+                    "Data QR berhasil dihapus",
+                    "QR data deleted successfully",
+                    List.of()
+            );
+
+        } catch (IllegalArgumentException e) {
+            return buildResponse(
+                    "404",
+                    e.getMessage(),
+                    "Not Found",
+                    List.of()
+            );
+        } catch (Exception e) {
+            return buildResponse(
+                    "500",
+                    "Gagal menghapus data QR",
+                    "Internal server error",
+                    List.of()
+            );
+        }
+    }
+
+    public QrResponse deleteAllQr() {
+        try {
+            qrRepository.deleteAll();
+
+            return buildResponse(
+                    "200",
+                    "Semua data QR berhasil dihapus",
+                    "All QR data deleted successfully",
+                    List.of()
+            );
+
+        } catch (Exception e) {
+            return buildResponse(
+                    "500",
+                    "Gagal menghapus semua data QR",
+                    "Internal server error",
+                    List.of()
+            );
+        }
     }
 
     private QrResponse buildResponse(
