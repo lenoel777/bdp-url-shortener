@@ -53,7 +53,8 @@ public class WebController {
     }
 
     @GetMapping("/admin")
-    public String adminPage() {
+    public String adminPage(Model model) {
+        model.addAttribute("qrs", qrService.inquiryAll().getOutputSchemas());
         return "adminPage";
     }
 }
