@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDP URL Shortener</title>
+    <link rel="stylesheet" th:href="@{/css/output.css}">
+    <style>
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body class="bg-blue-50 min-h-screen flex items-center justify-center p-4 sm:p-6 md:p-8">
+    <div class="bg-blue-100 p-6 md:p-8 rounded-lg shadow-md w-3/4 max-w-2xl">
+        <h1 class="text-2xl md:text-3xl font-bold mb-6 text-center text-gray-800">URL Tools</h1>
+
+        <!-- Tabs -->
+        <div class="flex border-b border-gray-200 mb-6">
+            <button id="shortenTab" class="w-1/2 py-2 px-4 text-center text-blue-600 border-b-2 border-blue-600 font-medium focus:outline-none text-sm md:text-base" onclick="switchTab('shorten')">
+                Shorten URL
+            </button>
+            <button id="qrTab" class="w-1/2 py-2 px-4 text-center text-gray-500 hover:text-gray-700 font-medium focus:outline-none text-sm md:text-base" onclick="switchTab('qr')">
+                Generate QR Code
+            </button>
+        </div>
+
+        <!-- Shorten Form -->
+        <div id="shortenForm">
+            <form action="#" th:action="@{/}" th:object="${createUrlRequest}" method="post" class="space-y-4">
+                <div>
+                    <label for="originalUrl" class="block text-sm font-medium text-gray-700 mb-1">Original URL</label>
+                    <input type="text" id="originalUrl" th:field="*{originalUrl}"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                           placeholder="https://example.com" required />
+                </div>
+
+                <div>
+                    <label for="customUrl" class="block text-sm font-medium text-gray-700 mb-1">Custom Alias (Optional)</label>
+                    <input type="text" id="customUrl" th:field="*{customUrl}"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                           placeholder="my-custom-link" />
+                </div>
+
+                <button type="submit"
+                        class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300">
+                    Shorten
+                </button>
+            </form>
+
+            <div th:if="${shortUrl}" class="mt-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-md">
+                <p class="font-semibold">Shortened URL:</p>
+                <a th:href="${shortUrl}" th:text="${shortUrl}" class="text-blue-600 hover:underline break-all" target="_blank"></a>
+            </div>
+
+            <div th:if="${error}" class="mt-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-md">
+                <p class="font-semibold">Error:</p>
+                <span th:text="${error}"></span>
+            </div>
+        </div>
+
+        <!-- QR Code Form -->
+        <div id="qrForm" class="hidden">
+            <form action="#" th:action="@{/qr}" method="post" class="space-y-4">
+                <div>
+                    <label for="qrUrlInput" class="block text-sm font-medium text-gray-700 mb-1">URL for QR Code</label>
+                    <input type="text" id="qrUrlInput" name="url"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                           placeholder="https://example.com" required />
+                </div>
+
+                <button type="submit"
+                        class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-green-700 transition duration-300">
+                    Generate QR Code
+                </button>
+            </form>
+
+            <div th:if="${qrCodeImage}" class="mt-6 flex flex-col items-center p-4 bg-gray-50 border border-gray-200 rounded-md">
+                <p class="font-semibold mb-2 text-gray-700">Your QR Code:</p>
+                <img th:src="'data:image/png;base64,' + ${qrCodeImage}" alt="QR Code" class="border border-gray-300 rounded-md shadow-sm" />
+            </div>
+        </div>
+
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        const hasQrCode = /*[[${qrCodeImage != null}]]*/
+        false;
+
+        if (hasQrCode) {
+            switchTab('qr');
+        }
+
+        function switchTab(tab) {
+            const shortenTab = document.getElementById('shortenTab');
+            const qrTab = document.getElementById('qrTab');
+            const shortenForm = document.getElementById('shortenForm');
+            const qrForm = document.getElementById('qrForm');
+
+            if (tab === 'shorten') {
+                // Update Tab Styles
+                shortenTab.classList.add('text-blue-600', 'border-b-2', 'border-blue-600');
+                shortenTab.classList.remove('text-gray-500', 'hover:text-gray-700');
+                qrTab.classList.remove('text-blue-600', 'border-b-2', 'border-blue-600');
+                qrTab.classList.add('text-gray-500', 'hover:text-gray-700');
+
+                // Update Form Visibility
+                shortenForm.classList.remove('hidden');
+                qrForm.classList.add('hidden');
+            } else {
+                // Update Tab Styles
+                qrTab.classList.add('text-blue-600', 'border-b-2', 'border-blue-600');
+                qrTab.classList.remove('text-gray-500', 'hover:text-gray-700');
+                shortenTab.classList.remove('text-blue-600', 'border-b-2', 'border-blue-600');
+                shortenTab.classList.add('text-gray-500', 'hover:text-gray-700');
+
+                // Update Form Visibility
+                qrForm.classList.remove('hidden');
+                shortenForm.classList.add('hidden');
+            }
+        }
+        /*]]>*/
+    </script>
+</body>
+</html>

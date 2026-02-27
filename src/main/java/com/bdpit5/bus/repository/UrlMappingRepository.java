@@ -1,11 +1,12 @@
 package com.bdpit5.bus.repository;
-
-import com.bdpit5.bus.entity.UrlMapping;
+import com.bdpit5.bus.entity.UrlMappingEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import java.util.Optional;
 
-public interface UrlMappingRepository extends JpaRepository<UrlMapping, Long> {
+public interface UrlMappingRepository extends JpaRepository<UrlMappingEntity, Long> {
 
-    Optional<UrlMapping> findByShortCode(String shortCode);
+    Optional<UrlMappingEntity> findByShortCode(String shortCode);
+
     boolean existsByShortCode(String shortCode);
 }

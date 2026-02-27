@@ -2,15 +2,13 @@ package com.bdpit5.bus.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-import org.springframework.validation.annotation.Validated;
 import tools.jackson.databind.PropertyNamingStrategies;
 import tools.jackson.databind.annotation.JsonNaming;
 
 @Data
-@Validated
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class CreateUrlRequest {
+public class QrRequest {
     @NotBlank(message = "Url must not be blank")
     private String originalUrl;
-    private String customUrl;
+    private Integer size;
 }

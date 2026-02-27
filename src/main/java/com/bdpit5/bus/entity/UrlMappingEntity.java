@@ -2,6 +2,7 @@ package com.bdpit5.bus.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UrlMapping {
+public class UrlMappingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
