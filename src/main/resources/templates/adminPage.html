@@ -29,20 +29,33 @@
     </div>
 
     <!-- QR TABLE -->
-    <div class="bg-white shadow-lg rounded-2xl p-6">
-        <h2 class="text-xl font-semibold mb-4">All QR Codes</h2>
+    <div class="bg-white shadow-xl rounded-2xl p-6">
+        <h2 class="text-2xl font-bold mb-6">QR Code Records</h2>
 
-        <div class="overflow-x-auto">
-            <table class="min-w-full border border-gray-200">
-                <thead class="bg-gray-50">
-                <tr>
-                    <th class="px-4 py-2 text-left">QR ID</th>
-                    <th class="px-4 py-2 text-left">QR Image</th>
-                </tr>
-                </thead>
-                <tbody id="qrTableBody" class="divide-y divide-gray-200">
-                </tbody>
-            </table>
+        <div class="grid gap-6
+                grid-cols-1
+                sm:grid-cols-2
+                md:grid-cols-3
+                lg:grid-cols-4">
+
+            <div th:each="qr : ${qrs}"
+                 class="bg-gray-50 rounded-2xl p-5 shadow hover:shadow-lg transition duration-300">
+
+                <div class="flex justify-center">
+                    <img th:src="${qr.qrCodeBase64}"
+                         class="w-32 h-32 object-contain"/>
+                </div>
+
+                <div class="mt-4 text-center">
+                    <p class="text-sm break-all font-medium"
+                       th:text="${qr.originalUrl}"></p>
+
+                    <p class="text-xs text-gray-500 mt-2"
+                       th:text="${qr.createdAt}">
+                    </p>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -70,27 +83,7 @@
         });
     }
 
-    async function loadQr() {
-        const response = await fetch('/inquiry-all');
-        const data = await response.json();
-
-        const tableBody = document.getElementById("qrTableBody");
-        tableBody.innerHTML = "";
-
-        data.output_schemas.forEach(item => {
-            tableBody.innerHTML += `
-                <tr class="hover:bg-gray-50">
-                    <td class="px-4 py-2">${item.id}</td>
-                    <td class="px-4 py-2">
-                        <img src="${item.qr_image}" class="w-24 h-24"/>
-                    </td>
-                </tr>
-            `;
-        });
-    }
-
     loadUrls();
-    loadQr();
 </script>
 
 </body>
