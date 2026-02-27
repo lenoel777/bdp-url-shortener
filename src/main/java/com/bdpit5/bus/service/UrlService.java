@@ -4,7 +4,9 @@ import com.bdpit5.bus.dto.CreateUrlRequest;
 import com.bdpit5.bus.dto.UrlResponse;
 import com.bdpit5.bus.entity.UrlMapping;
 import com.bdpit5.bus.repository.UrlMappingRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +18,8 @@ public class UrlService {
 
     private final UrlMappingRepository repository;
 
-    private static final String BASE_URL = "http://localhost:8080/s/";
+    @Value("${app.base-url}")
+    private String BASE_URL;
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private static final int SHORT_CODE_LENGTH = 6;
 
@@ -84,5 +87,8 @@ public class UrlService {
         return shortCode;
     }
 
-
+    @PostConstruct
+    public void logProfile() {
+        System.out.println("BASE URL: " + BASE_URL);
+    }
 }
